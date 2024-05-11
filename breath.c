@@ -3,67 +3,69 @@
 
 int main(int argc, char **argv)
 {
-    const int disp_width = 1024, disp_height = 700,
-              square_size = 200;
-
-    float circle_size = 20.0f;
+    const int disp_width = 1024,
+              disp_height = 700;
 
     InitWindow(disp_width, disp_height, "Breath");
     SetTargetFPS(60);
 
-    int x = disp_width / 2 - square_size / 2,
-        y = disp_height / 2 - square_size / 2,
+    int rect_width = 400,
+        rect_heigh = 200,
+        x = disp_width / 2 - rect_width / 2,
+        y = disp_height / 2 - rect_heigh / 2,
         state = 0,
         frame = 0;
 
+    float circle_size = 20.0f;
+
     while (!WindowShouldClose())
     {
-        int circle_center_x, circle_center_y;
+        int circle_center_x, circle_center_y, side_len;
         const char *words;
         switch (state)
         {
         case 0:
-            circle_center_x = x;
-            circle_center_y = (y + square_size) - frame;
             words = "Breath in";
+            side_len = rect_heigh;
+            circle_center_x = x;
+            circle_center_y = (y + rect_heigh) - frame;
             break;
+
         case 1:
+            words = "Hold";
+            side_len = rect_width;
             circle_center_x = x + frame;
             circle_center_y = y;
-            words = "Hold";
             break;
-        case 2:
-            circle_center_x = x + square_size;
-            circle_center_y = y + frame;
-            words = "Breath Out";
 
+        case 2:
+            words = "Breath Out";
+            side_len = rect_heigh;
+            circle_center_x = x + rect_width;
+            circle_center_y = y + frame;
             break;
+
         case 3:
-            circle_center_x = x + square_size - frame;
-            circle_center_y = y + square_size;
             words = "Hold";
+            side_len = rect_width;
+            circle_center_x = x + rect_width - frame;
+            circle_center_y = y + rect_heigh;
             break;
         }
 
         BeginDrawing();
         ClearBackground(BLACK);
-        DrawRectangleLines(x, y, square_size, square_size, LIGHTGRAY);
+        DrawRectangleLines(x, y, rect_width, rect_heigh, LIGHTGRAY);
         DrawCircle(circle_center_x, circle_center_y, circle_size, WHITE);
-        DrawText(words, x + square_size / 2 - MeasureText(words, 18) / 2, y + square_size / 2, 18, YELLOW);
-
-        // debug
-        // DrawText(TextFormat("Frame:%d", frame), 25, 25, 18, GREEN);
-        // DrawText(TextFormat("State:%d", state), 25, 25 + 20, 18, GREEN);
-        // DrawText(TextFormat("X:%d, Y:%d", circle_center_x, circle_center_y),
-        //          25, 25 + 40, 18, GREEN);
+        DrawText(words, x + rect_width / 2 - MeasureText(words, 18) / 2,
+                 y + rect_heigh / 2, 18, YELLOW);
         EndDrawing();
 
-        if (++frame > square_size)
+        if (++frame > side_len)
         {
+            frame = 0;
             if (++state > 3)
                 state = 0;
-
-            frame = 0;
         }
     }
 
