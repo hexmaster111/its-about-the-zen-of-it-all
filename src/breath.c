@@ -1,11 +1,14 @@
 #include <raylib.h>
 #include <stdio.h>
+#include "heart_rate_repeter_com.h"
 
 int main(int argc, char **argv)
 {
     const int disp_width = 1024,
               disp_height = 700,
               font_size = 60;
+
+    hrr_open("/dev/ttyACM0");
 
     InitWindow(disp_width, disp_height, "Breath");
     SetTargetFPS(60);
