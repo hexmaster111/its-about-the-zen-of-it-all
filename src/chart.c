@@ -3,6 +3,11 @@
 #include <stdio.h>
 #include "chart.h"
 
+int map(int input, int input_start, int input_end, int output_start, int output_end)
+{
+    return output_start + ((output_end - output_start) / (input_end - input_start)) * (input - input_start);
+}
+
 void draw_chart(
     int x, int y,
     int width,
@@ -15,6 +20,19 @@ void draw_chart(
     int *ydata,
     int points)
 {
+
+    // https://stackoverflow.com/a/5732390
+    int xslope = ((x + width) - x) / (xmax - xmin);
+    int yslope = ((y + height) - y) / (ymax - ymin);
+
+    int last_x_pt;
+    int last_y_pt;
+
+    for (size_t i = 0; i < count; i++)
+    {
+        /* code */
+    }
+
     DrawRectangleLines(x, y, width, height, LIGHTGRAY);
 }
 
@@ -31,15 +49,20 @@ int main(int argc, char *argv[])
         x = disp_width / 2 - rect_width / 2,
         y = disp_height / 2 - rect_heigh / 2;
 
+    int xdata[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int ydata[] = {1, 2, 3, 4, 5, 4, 3, 2, 1, 0};
+    int padding = 200;
+
     while (!WindowShouldClose())
     {
-
         BeginDrawing();
         ClearBackground(BLACK);
-
-        int xdata[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        int ydata[] = {1, 2, 3, 4, 5, 4, 3, 2, 1, 0};
-        draw_chart(10, 10, disp_width - 20, disp_height - 20, -10, 10, -5, 5, xdata, ydata, 10);
+        draw_chart(padding, padding,
+                   disp_width - padding * 2,
+                   disp_height - padding * 2,
+                   -10, 10,
+                   -5, 5,
+                   xdata, ydata, 10);
         EndDrawing();
     }
 
