@@ -1,0 +1,11 @@
+void draw_chart(int x,
+                int y,
+                int width,
+                int height,
+                int xmin,
+                int xmax,
+                int ymin,
+                int ymax,
+                int *xdata,
+                int *ydata,
+                int points);
