@@ -32,7 +32,12 @@ void draw_chart(
     // Axis labels are tipped sideways
 
     int title_sep_y = title_y + title_font_size + (title_font_size / 2);
-    // DrawTextPro(GetFontDefault(), yaxislabel, (Vector2){.x = 0, .y = 0}, (Vector2){.x = 0, .y = 0}, 90, axis_label_font_size, )
+    DrawTextPro(GetFontDefault(),
+                yaxislabel,
+                (Vector2){.x = x + axis_label_font_size, .y = title_sep_y},
+                (Vector2){.x = 0, .y = 0},
+                90,
+                axis_label_font_size, 0, YELLOW);
 
     DrawLine(x + axis_label_font_size + (axis_label_font_size / 2), title_sep_y, x + width, title_sep_y, WHITE);
 }
