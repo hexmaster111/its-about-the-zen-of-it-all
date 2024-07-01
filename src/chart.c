@@ -12,6 +12,8 @@ void draw_chart(
     int x, int y,
     int width,
     int height,
+    const char *title,
+    const char *yaxislabel,
     int xmin,
     int xmax,
     int ymin,
@@ -20,20 +22,19 @@ void draw_chart(
     int *ydata,
     int points)
 {
+    const int title_font_size = 12;
+    const int axis_label_font_size = 12;
 
-    // https://stackoverflow.com/a/5732390
-    int xslope = ((x + width) - x) / (xmax - xmin);
-    int yslope = ((y + height) - y) / (ymax - ymin);
-
-    int last_x_pt;
-    int last_y_pt;
-
-    for (size_t i = 0; i < count; i++)
-    {
-        /* code */
-    }
+    int title_y = y + title_font_size / 2;
 
     DrawRectangleLines(x, y, width, height, LIGHTGRAY);
+    DrawText(title, (width / 2) - (MeasureText(title, title_font_size) / 2) + x, title_y, title_font_size, YELLOW);
+    // Axis labels are tipped sideways
+
+    int title_sep_y = title_y + title_font_size + (title_font_size / 2);
+    // DrawTextPro(GetFontDefault(), yaxislabel, (Vector2){.x = 0, .y = 0}, (Vector2){.x = 0, .y = 0}, 90, axis_label_font_size, )
+
+    DrawLine(x + axis_label_font_size + (axis_label_font_size / 2), title_sep_y, x + width, title_sep_y, WHITE);
 }
 
 int main(int argc, char *argv[])
@@ -60,6 +61,8 @@ int main(int argc, char *argv[])
         draw_chart(padding, padding,
                    disp_width - padding * 2,
                    disp_height - padding * 2,
+                   "Test Chart!",
+                   "Barks",
                    -10, 10,
                    -5, 5,
                    xdata, ydata, 10);
