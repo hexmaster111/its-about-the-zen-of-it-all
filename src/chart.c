@@ -14,10 +14,8 @@ void draw_chart(
     int height,
     const char *title,
     const char *yaxislabel,
-    int xmin,
-    int xmax,
-    int ymin,
-    int ymax,
+    int xmin, int xmax,
+    int ymin, int ymax,
     int *xdata,
     int *ydata,
     int points)
@@ -39,17 +37,31 @@ void draw_chart(
 
     DrawRectangleLines(x, y, width, height, LIGHTGRAY);
     DrawLine(x + (axis_label_font_size * 2), title_sep_y, x + width, title_sep_y, WHITE);
-    DrawLine(x + (axis_label_font_size * 2), title_sep_y,
-             x + (axis_label_font_size * 2), y + height, WHITE);
+    DrawLine(x + (axis_label_font_size * 2), title_sep_y, x + (axis_label_font_size * 2), y + height, WHITE);
+
+    int chartMinX = x + (axis_label_font_size * 2);
+    int chartMinY = y + height;
+
+    int chartMaxX = x + width;
+    int chartMaxY = title_sep_y;
+
+    // DrawCircle(chartMinX, chartMinY, 5, RED);
+    // DrawCircle(chartMaxX, chartMaxY, 5, GREEN);
+
+    // slope = (output_end - output_start) / (input_end - input_start)
+    double xSlope = 1.0 * (chartMaxX - chartMinX) / (xmax - xmin);
+    double ySlope = 1.0 * (chartMaxY - chartMinY) / (ymax - ymin);
 
     for (int i = 0; i < points; i++)
     {
         int dataValuex = xdata[i];
         int dataValuey = ydata[i];
 
-        
-        DrawCircle(dataValuex, dataValuey, 2, YELLOW);
+        // output = output_start + slope * (input - input_start)
+        int scailedXValue = chartMinX + xSlope * (dataValuex - xmin);
+        int scailedYValue = chartMinY + ySlope * (dataValuey - ymin);
 
+        DrawCircle(scailedXValue, scailedYValue, 2, YELLOW);
     }
 }
 
@@ -68,19 +80,21 @@ int main(int argc, char *argv[])
 
     int xdata[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     int ydata[] = {1, 2, 3, 4, 5, 4, 3, 2, 1, 0};
-    int padding = 200;
 
     while (!WindowShouldClose())
     {
         BeginDrawing();
         ClearBackground(BLACK);
-        draw_chart(padding, padding,
-                   disp_width - padding * 2,
-                   disp_height - padding * 2,
-                   "Test Chart!",
-                   "Barks",
-                   -10, 10,
-                   -5, 5,
+        draw_chart(/*x*/ 10,
+                   /*x*/ 10,
+                   /*w*/ 200,
+                   /*h*/ 200,
+                   /*title*/ "Test Chart!",
+                   /*y axis title*/ "Barks",
+                   /*x min*/ -2,
+                   /*x max*/ 15,
+                   /*y min*/ -2,
+                   /*y max*/ 15,
                    xdata, ydata, 10);
         EndDrawing();
     }
