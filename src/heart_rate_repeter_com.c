@@ -201,7 +201,7 @@ int hrr_close()
 
 int hrr_open(const char *modem)
 {
-    hr_port = open(modem, O_RDWR | O_NOCTTY);
+    hr_port = open(modem, O_RDWR | O_NOCTTY | O_NONBLOCK);
     if (hr_port < 0)
     {
         fprintf(stderr, "Could not open port!");
@@ -223,8 +223,8 @@ int hrr_open(const char *modem)
     tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL); // Disable any special handling of received bytes
     tty.c_oflag &= ~OPOST;                                                       // Prevent special interpretation of output bytes (e.g. newline chars)
     tty.c_oflag &= ~ONLCR;                                                       // Prevent conversion of newline to carriage return/line feed
-    tty.c_cc[VTIME] = 10;                                                        // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
-    tty.c_cc[VMIN] = 5;
+    tty.c_cc[VTIME] = 0;                                                         // not sure that i need to set these with noblock opening it
+    tty.c_cc[VMIN] = 0;
 
     cfsetspeed(&tty, B9600);
 
