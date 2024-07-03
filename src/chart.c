@@ -26,20 +26,31 @@ void draw_chart(
     const int axis_label_font_size = 12;
 
     int title_y = y + title_font_size / 2;
-
-    DrawRectangleLines(x, y, width, height, LIGHTGRAY);
-    DrawText(title, (width / 2) - (MeasureText(title, title_font_size) / 2) + x, title_y, title_font_size, YELLOW);
-    // Axis labels are tipped sideways
-
+    int ylabellen = MeasureText(yaxislabel, axis_label_font_size);
     int title_sep_y = title_y + title_font_size + (title_font_size / 2);
+
+    DrawText(title, (width / 2) - (MeasureText(title, title_font_size) / 2) + x, title_y, title_font_size, YELLOW);
     DrawTextPro(GetFontDefault(),
                 yaxislabel,
-                (Vector2){.x = x + axis_label_font_size, .y = title_sep_y},
+                (Vector2){.x = x + axis_label_font_size, .y = y + (ylabellen / 2) + (height / 2)},
                 (Vector2){.x = 0, .y = 0},
                 90,
-                axis_label_font_size, 0, YELLOW);
+                axis_label_font_size, 1, YELLOW);
 
-    DrawLine(x + axis_label_font_size + (axis_label_font_size / 2), title_sep_y, x + width, title_sep_y, WHITE);
+    DrawRectangleLines(x, y, width, height, LIGHTGRAY);
+    DrawLine(x + (axis_label_font_size * 2), title_sep_y, x + width, title_sep_y, WHITE);
+    DrawLine(x + (axis_label_font_size * 2), title_sep_y,
+             x + (axis_label_font_size * 2), y + height, WHITE);
+
+    for (int i = 0; i < points; i++)
+    {
+        int dataValuex = xdata[i];
+        int dataValuey = ydata[i];
+
+        
+        DrawCircle(dataValuex, dataValuey, 2, YELLOW);
+
+    }
 }
 
 int main(int argc, char *argv[])
