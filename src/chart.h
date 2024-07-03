@@ -11,3 +11,13 @@ void draw_chart(int x,
                 int *xdata,
                 int *ydata,
                 int points);
+
+void draw_chart_fit(int x,
+                    int y,
+                    int width,
+                    int height,
+                    const char *title,
+                    const char *yaxislabel,
+                    int *xdata,
+                    int *ydata,
+                    int points);

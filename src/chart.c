@@ -1,11 +1,55 @@
 
 #include <raylib.h>
-#include <stdio.h>
+#include <stddef.h>
 #include "chart.h"
 
 int map(int input, int input_start, int input_end, int output_start, int output_end)
 {
     return output_start + ((output_end - output_start) / (input_end - input_start)) * (input - input_start);
+}
+
+int find_min(int *data, int point_count)
+{
+    int min = __INT_MAX__;
+
+    for (size_t i = 0; i < point_count; i++)
+        if (data[i] < min)
+            min = data[i];
+
+    return min;
+}
+
+int find_max(int *data, int point_count)
+{
+    int max = ~__INT_MAX__;
+
+    for (size_t i = 0; i < point_count; i++)
+        if (data[i] > max)
+            max = data[i];
+
+    return max;
+}
+
+void draw_chart_fit(int x,
+                    int y,
+                    int width,
+                    int height,
+                    const char *title,
+                    const char *yaxislabel,
+                    int *xdata,
+                    int *ydata,
+                    int points)
+{
+    int xmin = find_min(xdata, points),
+        xmax = find_max(xdata, points),
+        ymin = find_min(ydata, points),
+        ymax = find_max(ydata, points);
+
+    draw_chart(x, y,
+               width, height,
+               title, yaxislabel,
+               xmin, xmax, ymin, ymax,
+               xdata, ydata, points);
 }
 
 void draw_chart(
@@ -52,6 +96,9 @@ void draw_chart(
     double xSlope = 1.0 * (chartMaxX - chartMinX) / (xmax - xmin);
     double ySlope = 1.0 * (chartMaxY - chartMinY) / (ymax - ymin);
 
+    int last_x_pt, last_y_pt;
+    bool first = true;
+
     for (int i = 0; i < points; i++)
     {
         int dataValuex = xdata[i];
@@ -61,43 +108,21 @@ void draw_chart(
         int scailedXValue = chartMinX + xSlope * (dataValuex - xmin);
         int scailedYValue = chartMinY + ySlope * (dataValuey - ymin);
 
-        DrawCircle(scailedXValue, scailedYValue, 2, YELLOW);
+        if (first)
+        {
+            first = false;
+            last_x_pt = scailedXValue;
+            last_y_pt = scailedYValue;
+            continue;
+        }
+
+        if (!((scailedXValue > x + width) || (scailedYValue < title_sep_y)))
+        {
+            // DrawCircle(scailedXValue, scailedYValue, 5, RED);
+            DrawLine(last_x_pt, last_y_pt, scailedXValue, scailedYValue, YELLOW);
+        }
+
+        last_x_pt = scailedXValue;
+        last_y_pt = scailedYValue;
     }
-}
-
-int main(int argc, char *argv[])
-{
-    const int disp_width = 1024,
-              disp_height = 700;
-
-    InitWindow(disp_width, disp_height, "Chart Demo");
-    SetTargetFPS(60);
-
-    int rect_width = 400,
-        rect_heigh = 200,
-        x = disp_width / 2 - rect_width / 2,
-        y = disp_height / 2 - rect_heigh / 2;
-
-    int xdata[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    int ydata[] = {1, 2, 3, 4, 5, 4, 3, 2, 1, 0};
-
-    while (!WindowShouldClose())
-    {
-        BeginDrawing();
-        ClearBackground(BLACK);
-        draw_chart(/*x*/ 10,
-                   /*x*/ 10,
-                   /*w*/ 200,
-                   /*h*/ 200,
-                   /*title*/ "Test Chart!",
-                   /*y axis title*/ "Barks",
-                   /*x min*/ -2,
-                   /*x max*/ 15,
-                   /*y min*/ -2,
-                   /*y max*/ 15,
-                   xdata, ydata, 10);
-        EndDrawing();
-    }
-
-    CloseWindow();
 }

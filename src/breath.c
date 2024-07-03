@@ -1,32 +1,11 @@
 #include <raylib.h>
 #include <stdio.h>
-#include "heart_rate_repeter_com.h"
 
 int main(int argc, char *argv[])
 {
     const int disp_width = 1024,
               disp_height = 700,
               font_size = 60;
-
-    // if (!hrr_open("/dev/ttyACM0"))
-    // {
-    //     return -1;
-    // }
-
-    // while (1)
-    // {
-    //     enum MESSAGE_t msg;
-    //     float fv = -1;
-    //     int iv = -1;
-    //     long lv = -1;
-    //     if (hrr_read(&msg, &fv, &iv, &lv))
-    //     {
-    //         if (msg == MESSAGE_ID ||
-    //             msg == MESSAGE_RD)
-    //             continue;
-    //         fprintf(stdout, "got! %d %d %f %ld \n", (int)msg, iv, fv, lv);
-    //     }
-    // }
 
     InitWindow(disp_width, disp_height, "Breath");
     SetTargetFPS(60);
@@ -92,5 +71,4 @@ int main(int argc, char *argv[])
     }
 
     CloseWindow();
-    hrr_close();
 }
