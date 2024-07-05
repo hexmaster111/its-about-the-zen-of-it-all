@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
                        /*h*/ 200,
                        /*title*/ "Test Chart!",
                        /*y axis title*/ "Barks",
-                       xdata, ydata, pt_count);
+                       xdata, ydata, pt_count, YELLOW);
 
         EndDrawing();
     }

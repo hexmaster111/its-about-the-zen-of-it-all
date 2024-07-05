@@ -128,6 +128,8 @@ int hrr_read(enum MESSAGE_t *msg, float *fv, int *iv, long *lv)
         msg_header[msg_len] = read_buf[msg_len];
     }
 
+    // fprintf(stdout, "%s", read_buf);
+
     if (strcmp(msg_header, "ND") == 0)
     {
         *msg = MESSAGE_ND;
@@ -192,7 +194,7 @@ int hrr_read(enum MESSAGE_t *msg, float *fv, int *iv, long *lv)
     }
     else
     {
-        fprintf(stdout, "unhandled msg : \'%s\'\n", msg_header);
+        // fprintf(stdout, "unhandled msg : \'%s\'\n", msg_header);
         return 0;
     }
 

@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     for (size_t i = 0; i < DATA_PTS; i++)
         x[i] = i;
 
-    bool noData = true;
+    bool noData = true, isFingerIn = false;
     int rdidx = 0, ididx = 0;
     int heartRate = 0;
     float tempature = 0;
@@ -77,10 +77,29 @@ int main(int argc, char *argv[])
                 noData = true;
                 heartRate = 0;
             }
+
+            if (rdnow > 100000)
+                isFingerIn = true;
+            else
+                isFingerIn = false;
         }
         else
         {
             frames++;
+        }
+
+        if (!isFingerIn)
+        {
+            rdidx = 0;
+            ididx = 0;
+
+            for (size_t i = 0; i < DATA_PTS; i++)
+                RD[i] = 0;
+
+            for (size_t i = 0; i < DATA_PTS; i++)
+                ID[i] = 0;
+
+            DrawText("FINGER OUT", 500, 200, 24, WHITE);
         }
 
         BeginDrawing();
@@ -90,17 +109,22 @@ int main(int argc, char *argv[])
         DrawText(TextFormat("F %ld", frames), 10, 20, 12, WHITE);
         DrawText(TextFormat("D %ld", data), 10, 32, 12, WHITE);
         DrawText(TextFormat("id %ld rd %ld", idnow, rdnow), 10, 44, 12, WHITE);
-        DrawText(TextFormat("%.2ff", tempature), 250, 265, 15, YELLOW);
 
-        if (!noData)
+        if (!noData && isFingerIn)
         {
-            const char *vitalsmessage = TextFormat("Heart Rate %d bpm\n", heartRate);
-            DrawText(vitalsmessage, 250, 250, 15, YELLOW);
+            DrawText(TextFormat("%d", heartRate), 250, 500, 48, YELLOW);
+            DrawText("    bpm", 250, 500, 48, YELLOW);
+            DrawText(TextFormat("%.2ff", tempature), 350, 500, 15, YELLOW);
+        }
+        else
+        {
+            DrawText("--- bpm", 250, 500, 48, YELLOW);
+            DrawText("---f", 350, 500, 15, YELLOW);
         }
 
         // + 1 and -1 for the umm chart to look right... idk why, but the first datapoint is zero alot?!
-        draw_chart_fit(350, 100, 600, 400, "Red Data               ", "", x, RD + 1, DATA_PTS - 1, RED);
-        draw_chart_fit(350, 100, 600, 400, "                IR Data", "", x, ID, DATA_PTS, PURPLE);
+        draw_chart_fit(50, 100, 800, 400, "Red Data               ", "", x, RD + 1, DATA_PTS - 1, RED);
+        draw_chart_fit(50, 100, 800, 400, "                IR Data", "", x, ID, DATA_PTS, PURPLE);
 
         EndDrawing();
     }
