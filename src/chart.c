@@ -2,7 +2,7 @@
 #include <raylib.h>
 #include <stddef.h>
 #include "chart.h"
-
+#include <stdlib.h>
 int map(int input, int input_start, int input_end, int output_start, int output_end)
 {
     return output_start + ((output_end - output_start) / (input_end - input_start)) * (input - input_start);
@@ -16,6 +16,9 @@ int find_min(int *data, int point_count)
         if (data[i] < min)
             min = data[i];
 
+    if (min == __INT_MAX__)
+        exit(0);
+
     return min;
 }
 
@@ -26,6 +29,9 @@ int find_max(int *data, int point_count)
     for (size_t i = 0; i < point_count; i++)
         if (data[i] > max)
             max = data[i];
+
+    if (max == ~__INT_MAX__)
+        exit(0);
 
     return max;
 }
@@ -38,7 +44,8 @@ void draw_chart_fit(int x,
                     const char *yaxislabel,
                     int *xdata,
                     int *ydata,
-                    int points)
+                    int points,
+                    Color linec)
 {
     int xmin = find_min(xdata, points),
         xmax = find_max(xdata, points),
@@ -49,7 +56,7 @@ void draw_chart_fit(int x,
                width, height,
                title, yaxislabel,
                xmin, xmax, ymin, ymax,
-               xdata, ydata, points);
+               xdata, ydata, points, linec);
 }
 
 void draw_chart(
@@ -62,7 +69,8 @@ void draw_chart(
     int ymin, int ymax,
     int *xdata,
     int *ydata,
-    int points)
+    int points,
+    Color linec)
 {
     const int title_font_size = 12;
     const int axis_label_font_size = 12;
@@ -119,7 +127,7 @@ void draw_chart(
         if (!((scailedXValue > x + width) || (scailedYValue < title_sep_y)))
         {
             // DrawCircle(scailedXValue, scailedYValue, 5, RED);
-            DrawLine(last_x_pt, last_y_pt, scailedXValue, scailedYValue, YELLOW);
+            DrawLine(last_x_pt, last_y_pt, scailedXValue, scailedYValue, linec);
         }
 
         last_x_pt = scailedXValue;

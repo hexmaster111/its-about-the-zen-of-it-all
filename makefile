@@ -12,4 +12,5 @@ breath: src/breath.c src/heart_rate_repeter_com.c
 	$(CC) $(FLAGS) src/breath.c src/heart_rate_repeter_com.c -obreath $(RAYLIB) -lm 
 
 hbview: src/hbview.c src/heart_rate_repeter_com.c src/chart.c
+	rm -f hbview
 	$(CC) $(FLAGS) src/chart.c src/hbview.c src/heart_rate_repeter_com.c -ohbview $(RAYLIB) -lm 

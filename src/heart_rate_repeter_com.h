@@ -35,6 +35,8 @@ enum MESSAGE_t
     __MESSAGE_COUNT
 };
 
+void hrr_init();
+int hrr_is_open();
 int hrr_open(const char *modem);
 int hrr_close();
 

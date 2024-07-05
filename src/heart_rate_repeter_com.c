@@ -24,6 +24,11 @@ struct
     clock_t last_got;
 } msg_history[__MESSAGE_COUNT] = {0};
 
+void hrr_init()
+{
+    hr_port = -1;
+}
+
 int read_int(const char *read_buff, size_t split_p, int read_buff_n)
 {
 
@@ -100,7 +105,7 @@ int hrr_read(enum MESSAGE_t *msg, float *fv, int *iv, long *lv)
     char read_buf[256];
     int n = read(hr_port, &read_buf, sizeof(read_buf));
 
-    if (0 > n) // got nothing or error
+    if (0 >= n)
     {
         return 0;
     }
@@ -192,6 +197,11 @@ int hrr_read(enum MESSAGE_t *msg, float *fv, int *iv, long *lv)
     }
 
     return 0;
+}
+
+int hrr_is_open()
+{
+    return hr_port > 0;
 }
 
 int hrr_close()

@@ -1,3 +1,7 @@
+#ifndef CHART_H
+#define CHART_H
+#include <raylib.h>
+
 void draw_chart(int x,
                 int y,
                 int width,
@@ -10,7 +14,8 @@ void draw_chart(int x,
                 int ymax,
                 int *xdata,
                 int *ydata,
-                int points);
+                int points,
+                Color linec);
 
 void draw_chart_fit(int x,
                     int y,
@@ -20,4 +25,7 @@ void draw_chart_fit(int x,
                     const char *yaxislabel,
                     int *xdata,
                     int *ydata,
-                    int points);
+                    int points,
+                    Color linec);
+
+#endif // CHART_H
