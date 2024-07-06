@@ -3,7 +3,7 @@
 #include <stddef.h>
 #include "chart.h"
 #include <stdlib.h>
-int map(int input, int input_start, int input_end, int output_start, int output_end)
+double map(double input, double input_start, double input_end, double output_start, double output_end)
 {
     return output_start + ((output_end - output_start) / (input_end - input_start)) * (input - input_start);
 }
@@ -16,12 +16,11 @@ int find_min(int *data, int point_count)
         if (data[i] < min)
             min = data[i];
 
-    if (min == __INT_MAX__)
-        exit(0);
+    // if (min == __INT_MAX__)
+    //     exit(0);
 
     return min;
 }
-
 int find_max(int *data, int point_count)
 {
     int max = ~__INT_MAX__;
@@ -30,8 +29,8 @@ int find_max(int *data, int point_count)
         if (data[i] > max)
             max = data[i];
 
-    if (max == ~__INT_MAX__)
-        exit(0);
+    // if (max == ~__INT_MAX__)
+    //     exit(0);
 
     return max;
 }

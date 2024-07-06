@@ -2,6 +2,10 @@
 #define CHART_H
 #include <raylib.h>
 
+int find_max(int *data, int point_count);
+int find_min(int *data, int point_count);
+double map(double input, double input_start, double input_end, double output_start, double output_end);
+
 void draw_chart(int x,
                 int y,
                 int width,

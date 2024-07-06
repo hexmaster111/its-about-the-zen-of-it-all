@@ -194,7 +194,7 @@ int hrr_read(enum MESSAGE_t *msg, float *fv, int *iv, long *lv)
     }
     else
     {
-        // fprintf(stdout, "unhandled msg : \'%s\'\n", msg_header);
+        fprintf(stdout, "unhandled msg : \'%s\'\n", msg_header);
         return 0;
     }
 
